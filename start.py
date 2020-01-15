@@ -23,10 +23,9 @@ class ePubMaker:
 
   def start_parser(self):
     driver_path = './driver/geckodriver'
-    root_url = 'https://www.x23qb.com/book/1230/'
     profile_path = '/home/'+pwd.getpwuid(os.getuid()).pw_name+'/.mozilla/firefox/y190nyqv.default-1573138803936'
-    self.web = WebControl(url=root_url, profile_path='./profile/', handless=False, browser_type='firefox', driver_path=driver_path)
-    self.web.browser_url(root_url)
+    self.web = WebControl(url=self.root_url, profile_path='./profile/', handless=False, browser_type='firefox', driver_path=driver_path)
+    self.web.browser_url(self.root_url)
     time.sleep(2)
     chapterList = self.web.find_element('id', 'chapterList').find_elements_by_tag_name('li')
     chapterToGo = []
@@ -41,10 +40,6 @@ class ePubMaker:
       self.copy_chapter(title, href)
 
     self.web.close_browser()
-
-
-  # title = '第十二卷 聖王國的聖騎士 上 第一章 魔皇亞達巴沃'
-  # href = 'https://www.x23qb.com/book/1230/4342228.html'
 
   def copy_chapter(self, title, href):
     web = self.web
@@ -70,7 +65,7 @@ class ePubMaker:
         # to next page
         next_page = web.find_element('xpath', '/html/body/p/a[5]')
         next_page_url = next_page.get_attribute('href')
-        if href[:href.index('.html')] in next_page_url:
+        if next_page_url and  href[:href.index('.html')] in next_page_url:
           next_page.click()
           # web.browser_url(next_page_url)
           
@@ -154,16 +149,24 @@ class ePubMaker:
 
 
 if __name__ == '__main__':
-
   epub_maker = ePubMaker(
-      serial_name = '獲得超弱技能「地圖化」的少年跟最強隊伍一起挑戰迷宮',
+      serial_name = '平凡職業造就世界最強',
       writer = '鴨野うどん',
       book_subtitle = '',
-      book_number = '第一卷',
-      epub_file_name = 'maplize 01',
-      root_url = 'https://www.x23qb.com/book/147813/'
+      book_number = '第九卷',
+      epub_file_name = '平凡職業造就世界最強 09',
+      root_url = 'https://www.x23qb.com/book/2386/'
     )
-  epub.start_parser()
+  epub_maker.start_parser()
+  epub_maker.create_epub()
 
-
+  epub_maker = ePubMaker(
+      serial_name = '平凡職業造就世界最強',
+      writer = '鴨野うどん',
+      book_subtitle = '',
+      book_number = '第十卷',
+      epub_file_name = '平凡職業造就世界最強 10',
+      root_url = 'https://www.x23qb.com/book/2386/'
+    )
+  epub_maker.start_parser()
   epub_maker.create_epub()
