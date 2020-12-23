@@ -1,4 +1,4 @@
 selenium==3.141.0
-beautifulSoup==4-4.8.2
+beautifulSoup4==4.9.3
 EbookLib==0.17.1
 

@@ -1,0 +1,7 @@
+book:
+  info:
+    serial_name: 'OVERLORD'
+    writer: '丸山くがね'
+    root_url: 'https://www.x23qb.com/book/1230/'
+  books:
+    - ['第十四卷', 'OVERLORD 14']
