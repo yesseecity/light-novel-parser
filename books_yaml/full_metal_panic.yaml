@@ -1,0 +1,25 @@
+book:
+  info:
+    serial_name: 'Full Metal Panic'
+    writer: '賀東招二'
+    root_url: 'https://www.23qb.net/book/858/'
+  books:
+    - ['第一卷',  'Full Metal Panic 01']
+    - ['第二卷',  'Full Metal Panic 02']
+    - ['第三卷',  'Full Metal Panic 03']
+    - ['第四卷',  'Full Metal Panic 04']
+    - ['第五卷',  'Full Metal Panic 05']
+    - ['第六卷',  'Full Metal Panic 06']
+    - ['第七卷',  'Full Metal Panic 07']
+    - ['第八卷',  'Full Metal Panic 08']
+    - ['第九卷',  'Full Metal Panic 09']
+    - ['第十卷',  'Full Metal Panic 10']
+    - ['第十一卷', 'Full Metal Panic 11']
+    - ['第十二卷', 'Full Metal Panic 12']
+    # - ['第十三卷', 'Full Metal Panic 13']
+    # - ['第十四卷', 'Full Metal Panic 14']
+    # - ['第十五卷', 'Full Metal Panic 15']
+    # - ['第十六卷', 'Full Metal Panic 16']
+    # - ['第十七卷', 'Full Metal Panic 17']
+    # - ['第十八卷', 'Full Metal Panic 18']
+    # - ['第十九卷', 'Full Metal Panic 19']
