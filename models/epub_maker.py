@@ -11,22 +11,25 @@ from ebooklib import epub
 
 
 class ePubMaker:
-  def __init__(self, serial_name, writer, book_subtitle, book_number, epub_file_name, root_url):
+  def __init__(self, serial_name, writer, book_subtitle, book_number, epub_file_name, root_url, handless=True):
     self.serial_name = serial_name
     self.writer = writer
     self.book_subtitle = book_subtitle
     self.book_number = book_number
     self.epub_file_name = epub_file_name
     self.root_url = root_url
+    self.handless = handless
 
     self.web = {}
     self.txt_file_list = []
 
-  def start_parser(self):
+  def open_browser(self):
     driver_path = './driver/geckodriver'
     profile_path = '/home/'+pwd.getpwuid(os.getuid()).pw_name+'/.mozilla/firefox/y190nyqv.default-1573138803936'
-    self.web = WebControl(url=self.root_url, profile_path='./profile/', handless=True, browser_type='firefox', driver_path=driver_path)
+    self.web = WebControl(url=self.root_url, profile_path='./profile/', handless=self.handless, browser_type='firefox', driver_path=driver_path)
     self.web.browser_url(self.root_url)
+
+  def start_parser(self):
     time.sleep(2)
     chapterList = self.web.find_element('id', 'chapterList').find_elements_by_tag_name('li')
     chapterToGo = []
@@ -47,47 +50,39 @@ class ePubMaker:
     chapter_title = title
     print(chapter_title)
     web.browser_url(href)
+    web.scroller_slip_to()
+    time.sleep(0.5)
 
     text_file_path = ''
+    content_text = ''
     while True:
       content = web.find_element('id', 'TextContent')
       content_text = content.text
       new_content_text = ''
       try:
-        end_mark_idx = content_text.index('＞＞')
-        new_content_text = content_text[:end_mark_idx-1]
-        
+        if content_text.find('（繼續下一頁）') > -1 :
+          end_mark_idx = content_text.find('（繼續下一頁）')
+          new_content_text = content_text[:end_mark_idx-1]
+        elif content_text.find('鉛筆小說') > -1 :
+          end_mark_idx = content_text.find('鉛筆小說')
+          new_content_text = content_text[:end_mark_idx-1]
       except Exception as e:
         new_content_text = content_text
-        # print(new_content_text[:5])
-        # print("===============")
-        # print(new_content_text[-5:])
-        
-        # print("error: ", e)
-        # time.sleep(10)
-        # lines = content.find_elements_by_tag_name('p')
-        # for line in lines:
-        #   new_content_text += (line.text+'\n')
-        # pass
+
       finally:
         text_file_path = self.save_to_text_file(chapter_title, new_content_text)
 
         # to next page
         next_page = web.find_element('xpath', '/html/body/p/a[5]')
-        next_page_url = next_page.get_attribute('href')
-        if next_page_url and  href[:href.index('.html')] in next_page_url:
-          next_page.click()
-          # web.browser_url(next_page_url)
-          
+        next_page.click()
+        web.scroller_slip_to()
+        time.sleep(0.5)
+
+        try:
           new_title = web.find_element('id', 'mlfy_main_text').find_element_by_tag_name('h1').text
-          # print('title: ', title)
-          # print('net title:', new_title)
-          while title == new_title:
-            time.sleep(2)
-            new_title = web.find_element('id', 'mlfy_main_text').find_element_by_tag_name('h1').text
-          title = new_title
-        else:
-          pass
+        except Exception as e:
+          break
+        if chapter_title not in new_title:
           break
     
     chapter = {}

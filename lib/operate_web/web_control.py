@@ -371,7 +371,7 @@ class WebControl:
         """
         return element.size
 
-    def scroller_slip_to(self, y=0):
+    def scroller_slip_to(self, y=None):
         """
             將scroller滑到指定高度
             :param y: Y軸高度【INT】，若沒指定則滑到最底
