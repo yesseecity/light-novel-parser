@@ -58,7 +58,7 @@ class WebControl:
                 #     raise ConnectionError(checker_res["err_msg"])
         else:
             # todo firefox的version判斷
-            self.__open_filefox(profile_path, self.driver_path, handless)
+            self.__open_filefox(self.driver_path, handless)
 
     def get_process_id(self):
         """
@@ -94,7 +94,7 @@ class WebControl:
         chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
         chrome_options.add_experimental_option('useAutomationExtension', False)
 
-        if self.os is not "windows":
+        if self.os != "windows":
             # 打開linux的flash
             profile = {"plugins.plugins_enabled": ["Shockwave Flash"]}
             chrome_options.add_experimental_option("prefs", profile)
@@ -104,18 +104,16 @@ class WebControl:
                                        chrome_options=chrome_options)
         return self.driver
 
-    def __open_filefox(self, profile_path, driver_path, handless):
+    def __open_filefox(self, driver_path, handless):
 
         profile = webdriver.FirefoxProfile()
         profile.set_preference('intl.accept_languages', 'zh-TW')
 
         options = webdriver.FirefoxOptions()
         options.headless = handless
-        options.add_argument(profile_path)
-
         self.driver = webdriver.Firefox(firefox_profile=profile,
                                         executable_path=driver_path,
-                                        firefox_options=options)
+                                        options=options)
         return self.driver
 
     def window_maximize(self):
@@ -201,7 +199,7 @@ class WebControl:
                     return element.find_elements_by_css_selector(condition)
             else:
                 if target == "id":
-                    return self.driver.find_elements_by_id(condition)
+                    return self.driver.find_element_by_id(condition)
                 elif target == "class":
                     return self.driver.find_elements_by_class_name(condition)
                 elif target == "link_text":
@@ -209,7 +207,7 @@ class WebControl:
                 elif target == "partial_link":
                     return self.driver.find_elements_by_partial_link_text(condition)
                 elif target == "xpath":
-                    return self.driver.find_elements_by_xpath(condition)
+                    return self.driver.find_element_by_xpath(condition)
                 elif target == "css":
                     return self.driver.find_elements_by_css_selector(condition)
         else:

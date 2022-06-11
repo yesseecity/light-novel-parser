@@ -25,8 +25,7 @@ class ePubMaker:
 
   def open_browser(self):
     driver_path = './driver/geckodriver'
-    profile_path = '/home/'+pwd.getpwuid(os.getuid()).pw_name+'/.mozilla/firefox/y190nyqv.default-1573138803936'
-    self.web = WebControl(url=self.root_url, profile_path='./profile/', handless=self.handless, browser_type='firefox', driver_path=driver_path)
+    self.web = WebControl(url=self.root_url, handless=self.handless, browser_type='firefox', driver_path=driver_path)
     self.web.browser_url(self.root_url)
 
   def start_parser(self):
